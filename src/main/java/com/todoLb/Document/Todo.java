@@ -2,8 +2,8 @@ package com.todoLb.todoStuff;
 
 import java.time.LocalDate;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import com.mongodb.lang.NonNull;
 
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Todo {
-    @Id
+    @Id 
     private String id;
     @NonNull
     private String title;
