@@ -1,9 +1,9 @@
-package com.todoLb.todoStuff;
+package com.todoLb.Document;
 
 import java.time.LocalDate;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import com.mongodb.lang.NonNull;
 

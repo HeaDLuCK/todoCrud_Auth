@@ -1,56 +1,28 @@
-package com.todoLb.User;
+package com.todoLb.Services;
 
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.todoLb.Document.User;
+import com.todoLb.Repository.UserRepo;
+
 @Service
-public class UserService {
-    private UserRepo userRepository;
-
+public class UserService implements UserDetailsService {
     @Autowired
-    public UserService(UserRepo userRepository) {
-        this.userRepository = userRepository;
+    private UserRepo userrepository;
+
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userrepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }
 
-    public List<User> getUsers() {
-        return this.userRepository.findAll();
+    public User findById(String id){
+        return userrepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User s not found"));
     }
 
-    public User getUserByUsername(String username) {
-        Optional<User> user = this.userRepository.getUserByUserName(username);
-        if (user.isEmpty())
-            throw new IllegalAccessError("not found");
-        return user.get();
-    }
-
-    public void addUser(User user) {
-        if (user.getUsername() != "" && user.getPassword() != "") {
-            this.userRepository.save(user);
-        } else {
-            System.out.println("username and password are empty");
-        }
-
-    }
-
-    public void updateUser(String id, String password) {
-        Optional<User> selectedDoc = this.userRepository.findById(id);
-        if (selectedDoc.isPresent() && password != "") {
-            selectedDoc.get().setPassword(password);
-            this.userRepository.save(selectedDoc.get());
-        } else {
-            System.out.println("id not found or password is empty");
-        }
-    }
-
-    public void deleteUser(String id) {
-        Optional<User> selectedDoc = this.userRepository.findById(id);
-        if (selectedDoc.isEmpty()) {
-            System.out.println("id not found");
-        } else {
-            this.userRepository.deleteById(id);
-        }
-    }
 }

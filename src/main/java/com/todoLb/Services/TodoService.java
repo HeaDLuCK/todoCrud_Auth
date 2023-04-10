@@ -1,10 +1,13 @@
-package com.todoLb.todoStuff;
+package com.todoLb.Services;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.todoLb.Document.Todo;
+import com.todoLb.Repository.TodoRepository;
 
 @Service
 public class TodoService {

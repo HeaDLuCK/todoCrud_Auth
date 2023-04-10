@@ -1,4 +1,4 @@
-package com.todoLb.todoStuff;
+package com.todoLb.Controller;
 
 import java.util.List;
 
@@ -12,16 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todoLb.Document.Todo;
+import com.todoLb.Services.TodoService;
+
 @RestController
 @RequestMapping("/")
 public class TodoController {
-
+    @Autowired
     private TodoService todosrv;
 
-    @Autowired
-    public TodoController(TodoService todosrv) {
-        this.todosrv = todosrv;
-    }
 
     @GetMapping
     public List<Todo> GetTodos() {

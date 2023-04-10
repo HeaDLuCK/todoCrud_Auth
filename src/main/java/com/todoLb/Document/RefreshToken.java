@@ -1,9 +1,8 @@
-package com.todoLb.User;
+package com.todoLb.Document;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import lombok.Data;
 
