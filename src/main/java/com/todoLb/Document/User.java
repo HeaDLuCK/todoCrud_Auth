@@ -14,7 +14,7 @@ import com.mongodb.lang.NonNull;
 import lombok.Data;
 
 @Data
-@Document(collection = "users")
+@Document
 public class User implements UserDetails {
     @Id
     private String id;
@@ -27,7 +27,6 @@ public class User implements UserDetails {
     @NonNull
     private String password;
 
-    @NonNull
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

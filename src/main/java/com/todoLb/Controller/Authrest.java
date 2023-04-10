@@ -1,24 +1,28 @@
-package com.todoLb.rest;
-
-import javax.validation.Valid;
+package com.todoLb.Controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.todoLb.Document.RefreshToken;
+import com.todoLb.Document.Todo;
 import com.todoLb.Document.User;
 import com.todoLb.Repository.Refreshtokenrepository;
 import com.todoLb.Repository.UserRepo;
+import com.todoLb.Services.TodoService;
 import com.todoLb.dto.LoginDTO;
 import com.todoLb.dto.SingupDTO;
 import com.todoLb.dto.TokenDTO;
@@ -37,23 +41,31 @@ public class Authrest {
     private UserRepo userrepo;
     @Autowired
     private PasswordEncoder passwordencoder;
+    @Autowired
+    private TodoService todosrv;
+
+    @GetMapping
+    public List<Todo> GetTodos() {
+        return todosrv.getTodo();
+    }
 
     @PostMapping("/login")
     @Transactional
-    public ResponseEntity<?> Login(@Valid @RequestBody LoginDTO dto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+    public ResponseEntity<?> Login(@RequestBody LoginDTO dto) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user= (User) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setOwner(user);
         refreshtokenrepository.save(refreshToken);
-        String accessToken =jwtHelper.generateAccessToken(user);
-        String refreshTokenString =jwtHelper.generateRefreshToken(user,refreshToken.getId());
-        return ResponseEntity.ok(new TokenDTO(user.getId(),accessToken,refreshTokenString));
+        String accessToken = jwtHelper.generateAccessToken(user);
+        String refreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken.getId());
+        return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
     }
 
     @PostMapping("signup")
-    public ResponseEntity<?> Signup(@Valid @RequestBody SingupDTO sdto) {
+    public ResponseEntity<?> Signup(@RequestBody SingupDTO sdto) {
         User user = new User(sdto.getUsername(), sdto.getEmail(), passwordencoder.encode(sdto.getPassword()));
         userrepo.save(user);
         RefreshToken refreshToken = new RefreshToken();

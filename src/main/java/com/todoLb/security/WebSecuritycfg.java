@@ -21,14 +21,14 @@ import com.todoLb.Services.UserService;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfiguration {
+public class WebSecuritycfg extends WebSecurityConfiguration {
     @Autowired
     private UserService userService;
     @Autowired
     private AccessTokenEntryPoint AccessTokenEntryPoint;
 
     @Bean
-    AccessTokenFilter accesstokenFilter() {
+    public AccessTokenFilter accesstokenFilter() {
         return new AccessTokenFilter();
     }
 

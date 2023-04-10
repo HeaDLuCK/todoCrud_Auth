@@ -14,7 +14,8 @@ public class Config extends AbstractMongoClientConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return databaseName;
+        System.out.println(databaseName);
+        return "databaseName";
     }
 
     @Override
@@ -23,7 +24,7 @@ public class Config extends AbstractMongoClientConfiguration {
     }
 
     @Bean
-    MongoTransactionManager MongoTransaction(MongoDatabaseFactory factory) {
+    public MongoTransactionManager MongoTransaction(MongoDatabaseFactory factory) {
         return new MongoTransactionManager(factory);
     }
 }
